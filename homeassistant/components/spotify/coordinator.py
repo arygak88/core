@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 import logging
+from mashumaro.exceptions import MissingField
 from typing import TYPE_CHECKING
 
 from spotifyaio import (
@@ -122,7 +123,7 @@ class SpotifyCoordinator(DataUpdateCoordinator[SpotifyCoordinatorData]):
                             context.uri,
                         )
                         self._playlist = None
-                    except SpotifyConnectionError:
+                    except (SpotifyConnectionError, MissingField):
                         _LOGGER.debug(
                             "Unable to load spotify playlist '%s'. "
                             "Continuing without playlist data",
